@@ -1,0 +1,44 @@
+{
+    "name": "@cajarty/gamechain",
+    "version": "1.0.0",
+    "description": "A framework for creating turn-based games which can be vaildated in web3.",
+    "main": "index.ts",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "test": "node ./test/index.ts",
+        "build": "tsc",
+        "format:check": "prettier --check .",
+        "format:write": "prettier --write .",
+        "lint:check": "eslint .",
+        "lint:fix": "eslint --fix ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/JaegarSarauer/GameChain.git"
+    },
+    "files": [
+        "lib/**/*"
+    ],
+    "keywords": [
+        "game",
+        "gaming",
+        "web3",
+        "crypto"
+    ],
+    "author": "Cajarty Computing",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/JaegarSarauer/GameChain/issues"
+    },
+    "homepage": "https://github.com/JaegarSarauer/GameChain#readme",
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^5.36.1",
+        "@typescript-eslint/parser": "^5.36.1",
+        "eslint": "^8.23.0",
+        "eslint-config-prettier": "^8.5.0",
+        "prettier": "^2.7.1",
+        "typescript": "^4.8.2"
+    }
+}
