@@ -2,17 +2,18 @@
     "name": "@cajarty/gamechain",
     "version": "1.0.0",
     "description": "A framework for creating turn-based games which can be vaildated in web3.",
-    "main": "index.ts",
+    "main": "./src/index.ts",
     "type": "module",
+    "module": "./lib/index.ts",
     "directories": {
         "test": "test"
     },
     "exports": [
-        "./"
+        "./src/"
     ],
     "scripts": {
         "test": "jest",
-        "build": "tsc",
+        "build": "tsc --project tsconfig.build.json",
         "format:check": "prettier --check .",
         "format:write": "prettier --write .",
         "lint:check": "eslint .",

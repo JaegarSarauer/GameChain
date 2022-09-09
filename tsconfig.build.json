@@ -10,6 +10,6 @@
         "strict": true,
         "baseUrl": "src"
     },
-    "include": ["src", "test"],
-    "exclude": ["**/__tests__/*", "node_modules"]
+    "include": ["src"],
+    "exclude": ["test", "**/__test__/*", "node_modules"]
 }
