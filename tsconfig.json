@@ -8,7 +8,10 @@
         "declaration": true,
         "outDir": "./lib",
         "strict": true,
-        "baseUrl": "src"
+        "baseUrl": "src",//"./src/",
+        // "paths": {
+        //     "@/*": ["./*"]
+        // }
     },
     "include": ["src", "test"],
     "exclude": ["**/__tests__/*", "node_modules"]

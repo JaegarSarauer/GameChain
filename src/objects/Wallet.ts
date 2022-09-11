@@ -1,6 +1,6 @@
-import iWeb3 from 'adapter/web3';
+import iWeb3 from '../adapter/web3';
 import { Account, Sign } from 'web3-core';
-import { SignatureType, SignatureTypes } from './receipt/SignatureType';
+import { SignatureType } from './receipt/SignatureType';
 
 interface Signature {
     message: string;
