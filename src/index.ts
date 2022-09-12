@@ -6,5 +6,6 @@ import ReceiptStructure from './objects/receipt/ReceiptStructure';
 import iWeb3 from './adapter/web3';
 import Receipt from './objects/receipt/Receipt';
 import type ReceiptItem from './objects/receipt/ReceiptItem';
+import ValidatorController from './validator/ValidatorController';
 
-export { GameController, GameInterface, GameProxy, Wallet, iWeb3, ReceiptStructure, ReceiptItem, Receipt };
+export { GameController, GameInterface, GameProxy, Wallet, iWeb3, ReceiptStructure, ReceiptItem, Receipt, ValidatorController };

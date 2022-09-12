@@ -1,13 +1,14 @@
 import Receipt from '../objects/receipt/Receipt';
 import GameProxy from '../game/GameProxy';
+import GameInterface from 'game/GameInterface';
 
 export default class ValidatorController {
     game: GameProxy;
     receipt: Receipt;
     receiptItemIndex = 0;
 
-    constructor(game: GameProxy, receipt: Receipt) {
-        this.game = game;
+    constructor(gameInterface: GameInterface, receipt: Receipt) {
+        this.game = new GameProxy(gameInterface);
         this.receipt = receipt;
     }
 
@@ -24,9 +25,14 @@ export default class ValidatorController {
         this.game.finalize();
     }
 
+    reset() {
+        this.receiptItemIndex = 0;
+    }
+
     replay() {
-        this.receipt.items.forEach(() => {
+        this.reset();
+        setInterval(()=> {
             this.update();
-        })
+        }, 1000);
     }
 }
