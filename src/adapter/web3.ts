@@ -1,11 +1,15 @@
+import { SignedSignature } from '../objects/receipt/SignatureType';
 import Web3 from 'web3';
-import { Account } from 'web3-core';
+import { Account, WalletBase, SignatureObject } from 'web3-core';
 import MetaMask from './MetaMask';
 import getWindow from './window';
+
 
 class Web3Impl {
     web3: Web3 | undefined;
     metaMask: MetaMask | undefined;
+    wallets: WalletBase | undefined;
+    walletCounterId: number = 0;
 
     async init() {
         this.metaMask = new MetaMask();
@@ -15,11 +19,18 @@ class Web3Impl {
             this.web3 = new Web3(); 
         }
         getWindow.web3 = this.web3;
+        this.wallets = this.web3!.eth.accounts.wallet.create(10);
     }
 
     createWallet(): Account {
-        const wallet = this.web3!.eth.accounts.wallet.create(1);
-        return wallet[0];
+        // TODO make this secure.
+        const wallet = this.wallets?.[this.walletCounterId++];
+        return wallet as Account;
+    }
+
+    recoverSignature(sign: SignedSignature) {
+        const result = this.web3?.eth.accounts.recover(sign);
+        console.info(result);
     }
 }
 

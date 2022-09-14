@@ -1,6 +1,10 @@
 import Receipt from '../objects/receipt/Receipt';
 import GameProxy from '../game/GameProxy';
-import GameInterface from 'game/GameInterface';
+import GameInterface from '../game/GameInterface';
+import iWeb3 from '../adapter/web3';
+import { SignedSignature } from 'objects/receipt/SignatureType';
+import SignatureUnwrapper from './SignatureUnwrapper';
+import ReceiptItem from 'objects/receipt/ReceiptItem';
 
 export default class ValidatorController {
     game: GameProxy;
@@ -16,10 +20,11 @@ export default class ValidatorController {
         this.game.initialize();
     }
 
-    update() {
-        if (this.receiptItemIndex < this.receipt.items.length) {
-            this.game.update(this.receipt.items[this.receiptItemIndex++]);
-        }
+    update(item: ReceiptItem) {
+        //if (this.receiptItemIndex < this.receipt.signatures.length) {
+            //this.game.update(this.receipt.signatures[this.receiptItemIndex++]);
+        //}
+        this.game.update(item);
     }
     finalize() {
         this.game.finalize();
@@ -30,9 +35,13 @@ export default class ValidatorController {
     }
 
     replay() {
+        const unwrapper = new SignatureUnwrapper(this.receipt.signatures[0] as SignedSignature);
         this.reset();
+        console.info(this.receipt.signatures)
         setInterval(()=> {
-            this.update();
+            //this.update();
+            const item = unwrapper.next();
+            //this.update(item);
         }, 1000);
     }
 }

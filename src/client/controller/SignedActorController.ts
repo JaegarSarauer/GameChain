@@ -1,11 +1,14 @@
 import Wallet from "../../objects/Wallet";
 
-export class SignedActorController {
-    //wallets: Wallet[]
 
-    registerSignedWallet(signature: string, privateKey: string) {
-        //
+export default class SignedActorController {
+    wallets: Wallet[] = [];
+
+    registerSignedWallet(wallet: Wallet) {
+        this.wallets.push(wallet);
     }
 
-
+    getWalletsInLobby() {
+        return this.wallets.filter((wallet: Wallet) => wallet.isInGame() ? null : wallet);
+    }
 }

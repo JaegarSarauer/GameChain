@@ -4,6 +4,12 @@ export const SignatureTypes = {
     ACTOR_ACTION: 'ACTOR_ACTION'
 } as const;
 
-
+export interface SignedSignature {
+    message: any;
+    messageHash: string;
+    r: string;
+    s: string;
+    v: string;
+}
 
 export type SignatureType = keyof typeof SignatureTypes;

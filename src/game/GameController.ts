@@ -1,3 +1,4 @@
+import Wallet from '../objects/Wallet';
 import Receipt from '../objects/receipt/Receipt';
 import ReceiptItem from '../objects/receipt/ReceiptItem';
 import GameInterface from './GameInterface';
@@ -16,8 +17,8 @@ export default class GameController {
         this.game.initialize();
     }
 
-    update(item: ReceiptItem, shouldUpdate: boolean = true) {
-        this.receipt.addItem(item);
+    update(wallet: Wallet, item: ReceiptItem, shouldUpdate: boolean = true) {
+        this.receipt.addItem(item, wallet);
         if (shouldUpdate) {
             this.game.update(item);
         }
