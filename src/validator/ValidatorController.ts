@@ -1,47 +1,49 @@
 import Receipt from '../objects/receipt/Receipt';
 import GameProxy from '../game/GameProxy';
 import GameInterface from '../game/GameInterface';
-import iWeb3 from '../adapter/web3';
-import { SignedSignature } from 'objects/receipt/SignatureType';
 import SignatureUnwrapper from './SignatureUnwrapper';
-import ReceiptItem from 'objects/receipt/ReceiptItem';
+import Controller from '../objects/Controller';
+import Wallet from '../objects/wallet/Wallet';
+import ReceiptItem from '../objects/receipt/ReceiptItem';
+import ReadWallet from '../objects/wallet/ReadWallet';
+import { WriteWallet } from '..';
 
-export default class ValidatorController {
+export default class ValidatorController implements Controller {
     game: GameProxy;
     receipt: Receipt;
-    receiptItemIndex = 0;
 
     constructor(gameInterface: GameInterface, receipt: Receipt) {
-        this.game = new GameProxy(gameInterface);
+        this.game = new GameProxy(this, gameInterface);
         this.receipt = receipt;
     }
 
-    initialize() {
-        this.game.initialize();
+    initialize(wallets: WriteWallet[]) {
+        this.game.initialize(wallets);
     }
 
-    update(item: ReceiptItem) {
-        //if (this.receiptItemIndex < this.receipt.signatures.length) {
-            //this.game.update(this.receipt.signatures[this.receiptItemIndex++]);
-        //}
+    update(wallet: Wallet, item: ReceiptItem) {
         this.game.update(item);
     }
+
     finalize() {
         this.game.finalize();
     }
 
-    reset() {
-        this.receiptItemIndex = 0;
-    }
-
     replay() {
-        const unwrapper = new SignatureUnwrapper(this.receipt.signatures[0] as SignedSignature);
-        this.reset();
-        console.info(this.receipt.signatures)
-        setInterval(()=> {
-            //this.update();
-            const item = unwrapper.next();
-            //this.update(item);
-        }, 1000);
+        if (this.receipt.signature) {
+            let index = 0;
+            const replayHandle = setInterval(() => {
+                if (index >= this.receipt.getItemLength()) {
+                    clearInterval(replayHandle);
+                    return;
+                }
+                const item = this.receipt.getItem(index++);
+                // TODO get address either from item or passed from getItem()
+                if (item) {
+                    const wallet = new ReadWallet('');
+                    this.update(wallet, item);
+                }
+            }, 1000);
+        }
     }
 }

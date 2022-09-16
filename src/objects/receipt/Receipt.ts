@@ -1,36 +1,57 @@
-import iWeb3 from "../../adapter/web3";
-import Wallet from "../../objects/Wallet";
-import { ReceiptData } from "../../adapter/IPFS";
-import ReceiptItem from "./ReceiptItem";
-import {SignedSignature} from './SignatureType';
+import { ReceiptData } from '../../adapter/IPFS';
+import ReceiptItem from './ReceiptItem';
+import { SignedSignature } from './SignatureType';
+import SignatureUnwrapper from '../../validator/SignatureUnwrapper';
+import ReceiptItemTypeDictionary from './ReceiptItemTypeDictionary';
+import Wallet from '../wallet/Wallet';
+
+
+export type UnsignedItemSignature = (SignedSignature | undefined | ReceiptItem)[];
+
 
 export default class Receipt {
-    signatures: (SignedSignature | ReceiptItem)[];
+    signature: SignedSignature | undefined;
+    types: ReceiptItemTypeDictionary;
+
     constructor() {
-        this.signatures = [];
+        this.types = new ReceiptItemTypeDictionary();
+    }
+
+    getItem(index: number): ReceiptItem | undefined {
+        if (this.signature) {
+            const sigUnwrap = new SignatureUnwrapper(this.signature);
+            const [message, signer] = sigUnwrap.getSignature(index);
+            console.info(message, signer);
+            //this.types.createItemFromType(message)
+            // initialize receipt item from message.
+
+            // TODO actual conversion
+            return;
+        }
+        return;
     }
 
     addItem(item: ReceiptItem, wallet: Wallet) {
-        const signature = this.sign(item, wallet);
+        const signature = this._sign(item, wallet);
+        this.types.add(item);
         signature.message = JSON.parse(signature.message);
-        //this.signatures.push(signature);
-        this.signatures = [signature];
-        console.info('Signature result: ', this.signatures)
+        this.signature = signature;
+    }
+
+    getItemLength() {
+        if (this.signature) {
+            const sigUnwrap = new SignatureUnwrapper(this.signature);
+            return sigUnwrap.signatureCount;
+        }
+        return 0;
     }
 
     load(data: ReceiptData) {
-        this.signatures = JSON.parse(data);
+        this.signature = JSON.parse(data);
     }
 
-    sign(item: ReceiptItem, wallet: Wallet): SignedSignature {
-        this.signatures.push(item);
-        const signature = wallet.sign({
-            data: this.signatures,
-            signatureType: 'ACTOR_ACTION',
-        });
-        // console.info('Signature: ', signature);
-        // iWeb3.recoverSignature(signature as SignatureObject);
-        return signature as SignedSignature;
-        //lastItem.signature = signature;
+    _sign(item: ReceiptItem, wallet: Wallet): SignedSignature {
+        const fullSig = [this.signature, item];
+        return wallet.sign(fullSig) as SignedSignature;
     }
 }

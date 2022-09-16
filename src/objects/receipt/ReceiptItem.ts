@@ -1,12 +1,11 @@
-import Wallet from "../../objects/Wallet";
-//TODO make all uses of SignatureObject wrapped.
-import {type SignedSignature} from './SignatureType';
+import Controller from '../Controller';
 
 export type ReceiptItemResult = unknown;
 
 interface ReceiptItem {
-    signature: SignedSignature | undefined;
-    execute(): ReceiptItemResult;
+    type: string;
+    execute(controller: Controller): ReceiptItemResult;
+    getBuilder(): (...params: any) => ReceiptItem;
 }
 
 export default ReceiptItem;

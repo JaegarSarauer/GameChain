@@ -28,9 +28,10 @@ class Web3Impl {
         return wallet as Account;
     }
 
-    recoverSignature(sign: SignedSignature) {
-        const result = this.web3?.eth.accounts.recover(sign);
-        console.info(result);
+    // TODO return a read-only wallet?
+    recoverSignature(sign: SignedSignature): string | undefined {
+        const address = this.web3?.eth.accounts.recover(sign);
+        return address
     }
 }
 

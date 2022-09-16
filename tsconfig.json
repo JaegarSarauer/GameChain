@@ -8,10 +8,7 @@
         "declaration": true,
         "outDir": "./lib",
         "strict": true,
-        "baseUrl": "src",//"./src/",
-        // "paths": {
-        //     "@/*": ["./*"]
-        // }
+        //"baseUrl": "src", // Currently broken: https://github.com/dividab/tsconfig-paths/issues/133
     },
     "include": ["src", "test"],
     "exclude": ["**/__tests__/*", "node_modules"]
