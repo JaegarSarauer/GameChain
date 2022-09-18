@@ -17,8 +17,8 @@ export default class ValidatorController implements Controller {
         this.receipt = receipt;
     }
 
-    initialize(wallets: WriteWallet[]) {
-        this.game.initialize(wallets);
+    initialize() {
+        this.game.initialize();
     }
 
     update(wallet: Wallet, item: ReceiptItem) {
@@ -32,12 +32,15 @@ export default class ValidatorController implements Controller {
     replay() {
         if (this.receipt.signature) {
             let index = 0;
+            // TODO make this pass in the inital wallets?
+            this.initialize();
             const replayHandle = setInterval(() => {
                 if (index >= this.receipt.getItemLength()) {
                     clearInterval(replayHandle);
                     return;
                 }
                 const item = this.receipt.getItem(index++);
+                console.info('item got:', item)
                 // TODO get address either from item or passed from getItem()
                 if (item) {
                     const wallet = new ReadWallet('');

@@ -9,7 +9,7 @@ interface Controller {
     game: GameInterface;
     receipt: Receipt;
 
-    initialize(wallets: WriteWallet[]): void;
+    initialize(): void;
     update(wallet: Wallet, item: ReceiptItem): void;
     finalize(): void;
 }

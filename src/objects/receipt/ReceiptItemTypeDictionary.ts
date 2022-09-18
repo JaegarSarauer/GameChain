@@ -14,11 +14,11 @@ export default class ReceiptItemTypeDictionary {
     add(item: ReceiptItem) {
         this.itemBuilders[item.type] = {
             type: item.type,
-            builder: item.getBuilder(),
+            builder: item.fromSignatureData,
         };
     }
 
-    createItemFromType(type: string, ...params: any) {
-        this.itemBuilders[type]?.builder(params);
+    createItemFromType(type: string, ...params: any): ReceiptItem {
+        return this.itemBuilders[type]?.builder(...params);
     }
 }

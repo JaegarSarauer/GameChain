@@ -1,4 +1,4 @@
-import Wallet from "../../objects/Wallet";
+import Wallet from "../../objects/wallet/WriteWallet";
 
 export class Actor {
     wallet: Wallet;

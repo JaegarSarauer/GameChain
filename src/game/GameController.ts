@@ -15,8 +15,8 @@ export default class GameController implements Controller {
         this.receipt = new Receipt();
     }
 
-    initialize(wallets: Wallet[]) {
-        this.game.initialize(wallets);
+    initialize() {
+        this.game.initialize();
     }
 
     update(wallet: Wallet, item: ReceiptItem) {

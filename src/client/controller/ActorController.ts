@@ -45,9 +45,10 @@ export default class ActorController {
     }
 
     onGameReady(gameController: GameController) {
-        if (this.owner) {
+        const actor = this.getActor();
+        if (this.owner && actor) {
             const gameHash = 'TODO set proper game hash.';
-            const assignWalletItem = new AssignWalletReceiptItem(this.owner.getAddress(), gameHash);
+            const assignWalletItem = new AssignWalletReceiptItem(actor, this.owner.getAddress(), gameHash);
             gameController.update(this.getActor() as Wallet, assignWalletItem);
             this.gameController = gameController;
             this.onGameReadyCallbacks.map((callback) => callback(gameController));

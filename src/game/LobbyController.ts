@@ -47,7 +47,7 @@ export default class LobbyController {
 
     createNewGame(actors: Wallet[]): GameController | undefined {
         const gameController = new GameController(this.build(actors));
-        gameController.initialize(actors);
+        gameController.initialize();
         return gameController;
     }
 

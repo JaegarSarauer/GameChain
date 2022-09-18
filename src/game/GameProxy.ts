@@ -13,8 +13,8 @@ export default class GameProxy {
         this.game = game;
     }
 
-    initialize(wallets: Wallet[]) {
-        this.game.initialize(wallets);
+    initialize() {
+        this.game.initialize(this.controller);
     }
 
     update(item: ReceiptItem) {

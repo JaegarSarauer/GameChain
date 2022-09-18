@@ -9,11 +9,14 @@ import getWindow from './adapter/window';
 import IPFSNode from './adapter/IPFS';
 import {type SignedSignature} from './objects/receipt/SignatureType';
 import WriteWallet from './objects/wallet/WriteWallet';
+import ReadWallet from './objects/wallet/ReadWallet';
 import ActorController from './client/controller/ActorController';
 import type Wallet from './objects/wallet/Wallet';
 import LobbyController from './game/LobbyController';
+import type Controller from './objects/Controller';
 
 export {
+    Controller,
     LobbyController,
     SignedSignature,
     UnsignedItemSignature,
@@ -21,6 +24,7 @@ export {
     GameProxy,
     GameController,
     ActorController,
+    ReadWallet,
     WriteWallet,
     iWeb3,
     ReceiptItem,
