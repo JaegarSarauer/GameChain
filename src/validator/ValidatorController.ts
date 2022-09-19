@@ -6,18 +6,25 @@ import Controller from '../objects/Controller';
 import Wallet from '../objects/wallet/Wallet';
 import ReceiptItem from '../objects/receipt/ReceiptItem';
 import ReadWallet from '../objects/wallet/ReadWallet';
-import { WriteWallet } from '..';
+import { SignedSignature } from '../objects/receipt/SignatureType';
+import InvalidReceiptItem from '../objects/receipt/items/InvalidReceiptItem';
+import AssignWalletReceiptItem from '../objects/receipt/items/AssignWalletReceiptItem';
 
-export default class ValidatorController implements Controller {
+export default class ValidatorController extends Controller {
     game: GameProxy;
     receipt: Receipt;
 
     constructor(gameInterface: GameInterface, receipt: Receipt) {
+        super();
         this.game = new GameProxy(this, gameInterface);
         this.receipt = receipt;
     }
 
     initialize() {
+        // TODO consolidate into one call area.
+        this.addReceiptItem(InvalidReceiptItem)
+        this.addReceiptItem(AssignWalletReceiptItem)
+
         this.game.initialize();
     }
 
@@ -32,7 +39,6 @@ export default class ValidatorController implements Controller {
     replay() {
         if (this.receipt.signature) {
             let index = 0;
-            // TODO make this pass in the inital wallets?
             this.initialize();
             const replayHandle = setInterval(() => {
                 if (index >= this.receipt.getItemLength()) {
@@ -40,9 +46,8 @@ export default class ValidatorController implements Controller {
                     return;
                 }
                 const item = this.receipt.getItem(index++);
-                console.info('item got:', item)
-                // TODO get address either from item or passed from getItem()
                 if (item) {
+                    // TODO fix empty wallet req.
                     const wallet = new ReadWallet('');
                     this.update(wallet, item);
                 }

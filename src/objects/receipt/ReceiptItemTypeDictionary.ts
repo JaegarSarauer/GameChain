@@ -1,4 +1,4 @@
-import ReceiptItem from "./ReceiptItem";
+import ReceiptItem from './ReceiptItem';
 
 export interface ItemBuilder {
     type: string;
@@ -8,17 +8,25 @@ export interface ItemBuilder {
 export default class ReceiptItemTypeDictionary {
     itemBuilders: { [type: string]: ItemBuilder } = {};
     constructor(...items: ReceiptItem[]) {
-        items.map((item: ReceiptItem) => this.add(item));
+        //items.map((item: ReceiptItem) => this.add(item));
     }
 
-    add(item: ReceiptItem) {
-        this.itemBuilders[item.type] = {
-            type: item.type,
-            builder: item.fromSignatureData,
+    add(type: string, builder: (...params: any) => ReceiptItem) {
+        this.itemBuilders[type] = {
+            type,
+            builder,
         };
     }
 
+    has(type: string) {
+        return this.itemBuilders[type] != null;
+    }
+
     createItemFromType(type: string, ...params: any): ReceiptItem {
-        return this.itemBuilders[type]?.builder(...params);
+        const itemBuilder = this.itemBuilders[type];
+        if (itemBuilder) {
+            return itemBuilder.builder(...params);
+        }
+        throw `Item builder does not exist for type ${type}.`;
     }
 }

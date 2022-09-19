@@ -44,7 +44,9 @@ export default class Receipt {
 
     addItem(item: ReceiptItem, wallet: Wallet) {
         const signature = this._sign(item, wallet);
-        this.types.add(item); // TODO add this when loading the signature too?
+        if (!this.types.has(item.type)) {
+            throw `Unknown ReceiptItem type ${item.type}. Must be registered for validation.`
+        }
         signature.message = JSON.parse(signature.message);
         this.signature = signature;
     }
