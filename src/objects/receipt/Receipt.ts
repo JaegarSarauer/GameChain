@@ -42,12 +42,11 @@ export default class Receipt {
         return this.validActors.filter((add: string) => add == address).length > 0;
     }
 
-    addItem(item: ReceiptItem, wallet: Wallet) {
-        const signature = this._sign(item, wallet);
+    async addItem(item: ReceiptItem, wallet: Wallet) {
+        const signature = await this._sign(item, wallet);
         if (!this.types.has(item.type)) {
             throw `Unknown ReceiptItem type ${item.type}. Must be registered for validation.`
         }
-        signature.message = JSON.parse(signature.message);
         this.signature = signature;
     }
 
@@ -59,12 +58,8 @@ export default class Receipt {
         return 0;
     }
 
-    // load(data: ReceiptData) {
-    //     this.signature = JSON.parse(data);
-    // }
-
-    _sign(item: ReceiptItem, wallet: Wallet): SignedSignature {
+    async _sign(item: ReceiptItem, wallet: Wallet): Promise<SignedSignature> {
         const fullSig = [this.signature, item.toSignatureData()];
-        return wallet.sign(fullSig) as SignedSignature;
+        return await wallet.sign(fullSig) as SignedSignature;
     }
 }

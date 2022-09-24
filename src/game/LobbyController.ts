@@ -36,9 +36,10 @@ export default class LobbyController {
             const gameController = this.createNewGame(actors);
             // todo move emit to createNewGame
             if (gameController) {
-                clients.forEach((client: ActorController) => {
-                    client.onGameReady(gameController);
-                })
+                clients.reduce(async (promise: Promise<void>, client: ActorController) => {
+                    await promise;
+                    await client.onGameReady(gameController);
+                }, Promise.resolve())
             }
             return gameController;
         }

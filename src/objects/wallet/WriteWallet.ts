@@ -28,7 +28,9 @@ export default class WriteWallet implements Wallet {
 
     sign(item: UnsignedItemSignature): SignedSignature {
         const message = JSON.stringify(item);
-        return this.web3Wallet.sign(message) as SignedSignature;
+        const signature = this.web3Wallet.sign(message) as SignedSignature;
+        signature.message = JSON.parse(signature.message);
+        return signature;
     }
 
     recover(signature: SignedSignature): string | undefined {

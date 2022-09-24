@@ -26,8 +26,8 @@ export default class GameController extends Controller {
         this.game.initialize();
     }
 
-    update(wallet: Wallet, item: ReceiptItem) {
-        this.receipt.addItem(item, wallet);
+    async update(wallet: Wallet, item: ReceiptItem) {
+        await this.receipt.addItem(item, wallet);
         this.game.update(item);
     }
 

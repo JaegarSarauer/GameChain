@@ -30,6 +30,10 @@ export default class ActorController {
         return this.actor ? this.actor : this.owner;
     }
 
+    getOwner() {
+        return this.owner;
+    }
+
     queueAsOwner(player: Wallet) {
         this.owner = player;
         
@@ -44,14 +48,17 @@ export default class ActorController {
         this.lobbyController.addClient(this);
     }
 
-    onGameReady(gameController: GameController) {
-        const actor = this.getActor();
-        if (this.owner && actor) {
-            const gameHash = 'TODO set proper game hash.';
-            const assignWalletItem = new AssignWalletReceiptItem(actor, this.owner.getAddress(), gameHash);
-            gameController.update(this.getActor() as Wallet, assignWalletItem);
-            this.gameController = gameController;
-            this.onGameReadyCallbacks.map((callback) => callback(gameController));
+    async onGameReady(gameController: GameController) {
+        const gameHash = 'TODO set proper game hash.';
+        const actor = this.getActor() as Wallet;
+        
+        if (!this.owner) {
+            throw 'Not queued.';
         }
+
+        const assignWalletItem = new AssignWalletReceiptItem(actor, this.owner.getAddress(), gameHash);
+        await gameController.update(this.owner, assignWalletItem);
+        this.gameController = gameController;
+        this.onGameReadyCallbacks.map((callback) => callback(gameController));
     }
 }

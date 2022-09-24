@@ -7,7 +7,7 @@ interface Wallet {
     isInGame(): boolean;
     isOwned(): boolean;
     getAddress(): string;
-    sign(item: UnsignedItemSignature): SignedSignature;
+    sign(item: UnsignedItemSignature): SignedSignature | Promise<SignedSignature>;
     recover(signature: SignedSignature): string | undefined;
 }
 
