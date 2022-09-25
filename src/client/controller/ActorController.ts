@@ -49,7 +49,7 @@ export default class ActorController {
     }
 
     async onGameReady(gameController: GameController) {
-        const gameHash = 'TODO set proper game hash.';
+        const gameHash = window.location.href;
         const actor = this.getActor() as Wallet;
         
         if (!this.owner) {

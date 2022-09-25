@@ -19,6 +19,9 @@ export default class AssignWalletReceiptItem extends ReceiptItem {
     }
 
     execute(controller: Controller): void {
+        if (this.gameHash != window.location.href) {
+            throw `Invalid game hash! Expected ${window.location.href} but got ${this.gameHash}`
+        }
         controller.receipt.validActors.push(this.actor.getAddress());
     }
 
